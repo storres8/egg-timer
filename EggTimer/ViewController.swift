@@ -9,30 +9,38 @@
 import UIKit
 
 class ViewController: UIViewController {
-    let softTime = 5
-    let mediumTime = 7
-    let hardTime = 12
-    
+    @IBOutlet weak var timerDone: UILabel!
 
+    // egg times are saved in secconds
+    let eggTimes: [String : Int] = [
+        "soft": 5,
+        "medium": 420,
+        "hard": 720
+    ]
+    
+    var secondsRemaining:Int = 60
+    
+    var timer = Timer()
+    
     @IBAction func hardnessSelected(_ sender: UIButton) {
+        timer.invalidate()
         
-        // titleLabel.text is mainly used to configure the text
-        // of the button for each state
-        // can also be used to modify the font
-        //print(sender.titleLabel!.text!)
-        
-        // current title is read-only is used to get the title
-        // that is currently being displayed
         let hardness = sender.currentTitle!.lowercased()
-        print(hardness)
         
-        if hardness == "soft" {
-            print(softTime)
-        } else if hardness == "medium" {
-            print(mediumTime)
-        } else {
-            print(hardTime)
-        }
+        secondsRemaining = eggTimes[hardness]!
+        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        
     }
     
+    
+    @objc func updateTimer() {
+        if secondsRemaining > 0 {
+            print("\(secondsRemaining) seconds.")
+            secondsRemaining -= 1
+        } else {
+            timer.invalidate()
+            timerDone.text = "DONE!"
+        }
+    }
 }
