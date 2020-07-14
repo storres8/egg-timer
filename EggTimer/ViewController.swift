@@ -10,7 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var timerDone: UILabel!
-
+    @IBOutlet weak var progressBar: UIProgressView!
+    
     // egg times are saved in secconds
     let eggTimes: [String : Int] = [
         "soft": 5,
@@ -40,6 +41,7 @@ class ViewController: UIViewController {
             secondsRemaining -= 1
         } else {
             timer.invalidate()
+            progressBar.progress = 1.0
             timerDone.text = "DONE!"
         }
     }
